@@ -204,6 +204,98 @@
     transition: max-height 0.4s ease;
   }
   .mobile-menu.open { max-height: 400px; }
+
+  /* === MetroJets visual upgrade: aviation photography === */
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 58%;
+    background:
+      linear-gradient(90deg, #060d1f 0%, rgba(6,13,31,.82) 22%, rgba(6,13,31,.25) 65%, rgba(6,13,31,.45) 100%),
+      linear-gradient(180deg, rgba(6,13,31,.28), rgba(6,13,31,.78)),
+      url('https://cdn.prod.website-files.com/6703f7dfd15367738df51db0/69ebbe25b6445232099d814b_file_a3yfs7ga.png') center/cover no-repeat;
+    opacity: .62;
+    pointer-events: none;
+  }
+  .hero-bg > * { z-index: 1; }
+
+  #services .service-card { position: relative; overflow: hidden; }
+  #services .service-card::before {
+    content: '';
+    display: block;
+    height: 150px;
+    margin: -2rem -2rem 1.5rem;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-bottom: 1px solid rgba(201,169,97,.18);
+    opacity: .9;
+  }
+  #services .service-card:nth-child(1)::before {
+    background-image: linear-gradient(180deg, rgba(6,13,31,.05), rgba(6,13,31,.75)), url('https://cdn.prod.website-files.com/6703f7dfd15367738df51db0/69bf28698fd102a7c72bdc58_file_8s1sjp6g.png');
+  }
+  #services .service-card:nth-child(2)::before {
+    background-image: linear-gradient(180deg, rgba(6,13,31,.05), rgba(6,13,31,.75)), url('https://cdn.prod.website-files.com/6714320ba85d0d0e22bc7471/69dac504458e6d089be455df_file_3tnoa4nh.png');
+  }
+  #services .service-card:nth-child(3)::before {
+    background-image: linear-gradient(180deg, rgba(6,13,31,.05), rgba(6,13,31,.75)), url('https://cdnimg.co/3db4fb5d-0435-4b01-b946-dff623039b31/67d368cb-c04d-4c63-a394-13ef4bd56b6e/best-airport-lounges-private-jet.jpg');
+  }
+  #services .service-card:nth-child(4)::before {
+    background-image: linear-gradient(180deg, rgba(6,13,31,.05), rgba(6,13,31,.75)), url('https://cdn.prod.website-files.com/6703f7dfd15367738df51db0/69ebbe25b6445232099d814b_file_a3yfs7ga.png');
+  }
+
+  #fleet .fleet-card { padding-top: 0; overflow: hidden; }
+  #fleet .fleet-card::before {
+    content: '';
+    display: block;
+    height: 190px;
+    margin: 0 -2rem 2rem;
+    background-position: center;
+    background-size: cover;
+    border-bottom: 1px solid rgba(201,169,97,.2);
+  }
+  #fleet .fleet-card:nth-child(1)::before {
+    background-image: linear-gradient(180deg, rgba(6,13,31,.02), rgba(6,13,31,.72)), url('https://cdn.prod.website-files.com/6703f7dfd15367738df51db0/69bf28698fd102a7c72bdc58_file_8s1sjp6g.png');
+  }
+  #fleet .fleet-card:nth-child(2)::before {
+    background-image: linear-gradient(180deg, rgba(6,13,31,.02), rgba(6,13,31,.72)), url('https://cdn.privatejetcardcomparisons.com/uploads/Flexjet-Praetor-600.jpeg?ar=16%3A9&auto=format&fit=crop&h=1&q=65');
+  }
+  #fleet .fleet-card:nth-child(3)::before {
+    background-image: linear-gradient(180deg, rgba(6,13,31,.02), rgba(6,13,31,.72)), url('https://cdn.prod.website-files.com/6714320ba85d0d0e22bc7471/69dac504458e6d089be455df_file_3tnoa4nh.png');
+  }
+  #fleet .fleet-card .flex.justify-center {
+    margin-top: -5.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  #jetcard {
+    background:
+      linear-gradient(90deg, #060d1f 0%, rgba(6,13,31,.96) 45%, rgba(6,13,31,.72) 100%),
+      url('https://cdn.prod.website-files.com/6602eefa331cd497b99e9bd1/67c8a9a447b89b2288843054_private-jet-pontus-frithiof.jpg') right center/cover no-repeat;
+  }
+
+  #safety {
+    background:
+      linear-gradient(90deg, rgba(10,22,40,.98) 0%, rgba(10,22,40,.92) 50%, rgba(6,13,31,.68) 100%),
+      url('https://cdn.prod.website-files.com/6703f7dfd15367738df51db0/69dac504458e6d089be455df_file_3tnoa4nh.png') center/cover no-repeat !important;
+  }
+
+  @media (max-width: 1023px) {
+    .hero-bg::after {
+      width: 100%;
+      opacity: .28;
+      background:
+        linear-gradient(180deg, rgba(6,13,31,.78), rgba(6,13,31,.96)),
+        url('https://cdn.prod.website-files.com/6703f7dfd15367738df51db0/69ebbe25b6445232099d814b_file_a3yfs7ga.png') center/cover no-repeat;
+    }
+  }
+  @media (max-width: 640px) {
+    #services .service-card::before { height: 125px; }
+    #fleet .fleet-card::before { height: 165px; }
+  }
+
 </style>
 </head>
 <body class="antialiased">
