@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Metro Jets — Private Aviation, Redefined</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/playfair-display@latest/latin-400-normal.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/playfair-display@latest/latin-700-normal.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-400-normal.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-500-normal.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-600-normal.css" />
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          navy: { 900: '#060d1f', 800: '#0a1628', 700: '#0f1f3d' },
+          gold: { 400: '#e0c078', 500: '#c9a961', 600: '#a8893f' }
+        },
+        fontFamily: {
+          serif: ['"Playfair Display"', 'serif'],
+          sans: ['Inter', 'sans-serif']
+        }
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: #060d1f; color: #e5e7eb; }
+  .font-serif { font-family: 'Playfair Display', serif; }
+
+  /* Hero background */
+  .hero-bg {
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(201,169,97,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(15,31,61,0.8) 0%, transparent 60%),
+      linear-gradient(180deg, #060d1f 0%, #0a1628 50%, #060d1f 100%);
+  }
+  .hero-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(201,169,97,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,169,97,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  }
+
+  /* Gold gradient text */
+  .gold-text {
+    background: linear-gradient(135deg, #e0c078 0%, #c9a961 50%, #a8893f 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Card hover */
+  .service-card {
+    background: linear-gradient(145deg, rgba(15,31,61,0.6) 0%, rgba(10,22,40,0.4) 100%);
+    border: 1px solid rgba(201,169,97,0.15);
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+  }
+  .service-card:hover {
+    border-color: rgba(201,169,97,0.5);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px -20px rgba(201,169,97,0.25);
+  }
+
+  /* Fleet card */
+  .fleet-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #0f1f3d 0%, #060d1f 100%);
+    border: 1px solid rgba(201,169,97,0.12);
+    transition: all 0.5s ease;
+  }
+  .fleet-card:hover { border-color: rgba(201,169,97,0.4); }
+  .fleet-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, #c9a961, transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .fleet-card:hover::before { opacity: 1; }
+
+  /* Jet silhouette SVG */
+  .jet-silhouette {
+    filter: drop-shadow(0 10px 30px rgba(201,169,97,0.2));
+    transition: transform 0.6s ease;
+  }
+  .fleet-card:hover .jet-silhouette { transform: translateX(8px); }
+
+  /* Button */
+  .btn-gold {
+    background: linear-gradient(135deg, #c9a961 0%, #a8893f 100%);
+    color: #060d1f;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-gold::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #e0c078 0%, #c9a961 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .btn-gold:hover::before { opacity: 1; }
+  .btn-gold span { position: relative; z-index: 1; }
+
+  .btn-outline {
+    border: 1px solid rgba(201,169,97,0.4);
+    color: #e0c078;
+    transition: all 0.3s ease;
+  }
+  .btn-outline:hover {
+    background: rgba(201,169,97,0.1);
+    border-color: #c9a961;
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Input styling */
+  .form-input {
+    background: rgba(6,13,31,0.6);
+    border: 1px solid rgba(201,169,97,0.2);
+    color: #e5e7eb;
+    transition: all 0.3s;
+  }
+  .form-input:focus {
+    outline: none;
+    border-color: #c9a961;
+    background: rgba(6,13,31,0.9);
+    box-shadow: 0 0 0 3px rgba(201,169,97,0.1);
+  }
+  .form-input::placeholder { color: #6b7280; }
+
+  /* Nav */
+  .nav-scrolled {
+    background: rgba(6,13,31,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(201,169,97,0.15);
+  }
+
+  /* Divider */
+  .gold-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,169,97,0.4), transparent);
+  }
+
+  /* Stat counter */
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    background: linear-gradient(135deg, #e0c078 0%, #a8893f 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Certification badge */
+  .cert-badge {
+    border: 1px solid rgba(201,169,97,0.25);
+    background: rgba(15,31,61,0.4);
+    transition: all 0.3s;
+  }
+  .cert-badge:hover {
+    border-color: rgba(201,169,97,0.6);
+    background: rgba(15,31,61,0.7);
+  }
+
+  /* Testimonial */
+  .testimonial-card {
+    background: linear-gradient(145deg, rgba(15,31,61,0.5) 0%, rgba(6,13,31,0.3) 100%);
+    border: 1px solid rgba(201,169,97,0.12);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #060d1f; }
+  ::-webkit-scrollbar-thumb { background: #c9a961; border-radius: 4px; }
+
+  /* Animated plane in hero */
+  @keyframes fly {
+    0%, 100% { transform: translate(0, 0) rotate(-2deg); }
+    50% { transform: translate(20px, -10px) rotate(-2deg); }
+  }
+  .flying-plane { animation: fly 8s ease-in-out infinite; }
+
+  /* Mobile menu */
+  .mobile-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .mobile-menu.open { max-height: 400px; }
+</style>
+</head>
+<body class="antialiased">
+
+<!-- NAVIGATION -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 py-5 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-3">
+      <svg class="w-9 h-9" viewBox="0 0 40 40" fill="none">
+        <path d="M20 4L36 20L20 36L4 20L20 4Z" stroke="#c9a961" stroke-width="1.5"/>
+        <path d="M20 10L30 20L20 30L10 20L20 10Z" fill="#c9a961" opacity="0.2"/>
+        <path d="M12 20L28 20M20 12L20 28" stroke="#c9a961" stroke-width="1"/>
+      </svg>
+      <div>
+        <div class="font-serif text-xl text-white tracking-wide">The Metro Jets</div>
+        <div class="text-[10px] text-gold-500 tracking-[0.2em] uppercase">Go Metro. Go Further.</div>
+      </div>
+    </a>
+    <div class="hidden lg:flex items-center gap-10 text-sm text-gray-300">
+      <a href="#services" class="hover:text-gold-400 transition">Services</a>
+      <a href="#fleet" class="hover:text-gold-400 transition">Fleet</a>
+      <a href="#jetcard" class="hover:text-gold-400 transition">Jet Card</a>
+      <a href="#safety" class="hover:text-gold-400 transition">Safety</a>
+      <a href="#contact" class="hover:text-gold-400 transition">Contact</a>
+    </div>
+    <div class="hidden lg:flex items-center gap-4">
+      <a href="tel:+2349062022230" class="text-sm text-gray-300 hover:text-gold-400 transition">+234 906 202 2230</a>
+      <a href="#booking" class="btn-gold px-5 py-2.5 rounded-sm text-sm font-medium"><span>Request Quote</span></a>
+    </div>
+    <button id="menuBtn" class="lg:hidden text-gold-500">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div id="mobileMenu" class="mobile-menu lg:hidden bg-navy-900 border-t border-gold-500/15">
+    <div class="px-6 py-4 flex flex-col gap-4 text-sm text-gray-300">
+      <a href="#services" class="hover:text-gold-400">Services</a>
+      <a href="#fleet" class="hover:text-gold-400">Fleet</a>
+      <a href="#jetcard" class="hover:text-gold-400">Jet Card</a>
+      <a href="#safety" class="hover:text-gold-400">Safety</a>
+      <a href="#contact" class="hover:text-gold-400">Contact</a>
+      <a href="#booking" class="btn-gold px-5 py-2.5 rounded-sm text-sm font-medium text-center"><span>Request Quote</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-bg relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden">
+  <!-- Decorative plane -->
+  <svg class="flying-plane absolute right-10 top-32 w-48 h-48 opacity-10 hidden md:block" viewBox="0 0 200 200" fill="none">
+    <path d="M20 100 L80 90 L180 60 L180 70 L100 100 L180 130 L180 140 L80 110 L20 100 Z" fill="#c9a961"/>
+  </svg>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10 w-full grid lg:grid-cols-12 gap-12 items-center">
+    <div class="lg:col-span-7 reveal">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="h-px w-12 bg-gold-500"></div>
+        <span class="text-gold-500 text-xs tracking-[0.3em] uppercase">Private Aviation · Est. 2024</span>
+      </div>
+      <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl text-white leading-[1.05] mb-6">
+        Where Luxury<br/>Meets <span class="gold-text italic">Precision.</span>
+      </h1>
+      <p class="text-lg text-gray-400 max-w-xl mb-10 leading-relaxed">
+        Bespoke private jet charters, aircraft management, and elite FBO services for discerning travellers and global organisations across Africa and beyond.
+      </p>
+      <div class="flex flex-wrap gap-4 mb-12">
+        <a href="#booking" class="btn-gold px-8 py-4 rounded-sm text-sm font-semibold tracking-wide"><span>Request a Quote</span></a>
+        <a href="#fleet" class="btn-outline px-8 py-4 rounded-sm text-sm font-semibold tracking-wide">Explore the Fleet</a>
+      </div>
+
+      <!-- Trust row -->
+      <div class="flex flex-wrap items-center gap-6 text-xs text-gray-500">
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-gold-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <span>NCAA Certified</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-gold-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <span>EASA AOC Holder</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-gold-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <span>Wyvern Registered</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking Widget -->
+    <div id="booking" class="lg:col-span-5 reveal">
+      <div class="relative p-8 md:p-10 rounded-sm" style="background: linear-gradient(145deg, rgba(15,31,61,0.85) 0%, rgba(6,13,31,0.95) 100%); border: 1px solid rgba(201,169,97,0.25); backdrop-filter: blur(20px);">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
+        <h3 class="font-serif text-2xl text-white mb-1">Plan Your Flight</h3>
+        <p class="text-sm text-gray-400 mb-6">Receive a personalised quote within 30 minutes.</p>
+
+        <form id="bookingForm" class="space-y-4">
+          <div>
+            <label class="block text-xs text-gold-500 tracking-wider uppercase mb-2">From</label>
+            <input type="text" placeholder="Departure city or airport" class="form-input w-full px-4 py-3 rounded-sm text-sm" required>
+          </div>
+          <div>
+            <label class="block text-xs text-gold-500 tracking-wider uppercase mb-2">To</label>
+            <input type="text" placeholder="Arrival city or airport" class="form-input w-full px-4 py-3 rounded-sm text-sm" required>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs text-gold-500 tracking-wider uppercase mb-2">Departure</label>
+              <input type="date" class="form-input w-full px-4 py-3 rounded-sm text-sm" required>
+            </div>
+            <div>
+              <label class="block text-xs text-gold-500 tracking-wider uppercase mb-2">Passengers</label>
+              <select class="form-input w-full px-4 py-3 rounded-sm text-sm">
+                <option>1–4</option>
+                <option>5–8</option>
+                <option>9–12</option>
+                <option>13+</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs text-gold-500 tracking-wider uppercase mb-2">Aircraft Preference</label>
+            <select class="form-input w-full px-4 py-3 rounded-sm text-sm">
+              <option>Light Jet</option>
+              <option>Midsize Jet</option>
+              <option>Heavy Jet</option>
+              <option>Ultra Long Range</option>
+              <option>Let us recommend</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-gold w-full py-4 rounded-sm text-sm font-semibold tracking-wider mt-2"><span>GET MY QUOTE</span></button>
+          <p class="text-xs text-gray-500 text-center">No payment required · 100% confidential</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<section class="border-y border-gold-500/15 bg-navy-800/40">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
+    <div class="text-center reveal">
+      <div class="stat-number text-4xl md:text-5xl mb-2">20K+</div>
+      <div class="text-xs text-gray-400 tracking-wider uppercase">Global Destinations</div>
+    </div>
+    <div class="text-center reveal">
+      <div class="stat-number text-4xl md:text-5xl mb-2">4,500+</div>
+      <div class="text-xs text-gray-400 tracking-wider uppercase">Flights Completed</div>
+    </div>
+    <div class="text-center reveal">
+      <div class="stat-number text-4xl md:text-5xl mb-2">99.8%</div>
+      <div class="text-xs text-gray-400 tracking-wider uppercase">On-Time Performance</div>
+    </div>
+    <div class="text-center reveal">
+      <div class="stat-number text-4xl md:text-5xl mb-2">24/7</div>
+      <div class="text-xs text-gray-400 tracking-wider uppercase">Concierge Support</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="py-24 md:py-32 relative">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="max-w-2xl mb-16 reveal">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="h-px w-12 bg-gold-500"></div>
+        <span class="text-gold-500 text-xs tracking-[0.3em] uppercase">Our Services</span>
+      </div>
+      <h2 class="font-serif text-4xl md:text-5xl text-white mb-5">End-to-End Aviation Solutions</h2>
+      <p class="text-gray-400 leading-relaxed">From on-demand charters to full aircraft management, every service is engineered around one principle: your time is invaluable.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Service 1 -->
+      <div class="service-card p-8 rounded-sm reveal">
+        <div class="w-12 h-12 mb-6 flex items-center justify-center border border-gold-500/30 rounded-sm">
+          <svg class="w-6 h-6 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3 class="font-serif text-xl text-white mb-3">Private Jet Charter</h3>
+        <p class="text-sm text-gray-400 leading-relaxed mb-4">On-demand charters tailored to your schedule. Access over 7,000 aircraft worldwide with transparent pricing and dedicated flight coordinators.</p>
+        <a href="#" class="text-gold-500 text-xs tracking-wider uppercase hover:text-gold-400 transition inline-flex items-center gap-2">Learn More <span>→</span></a>
+      </div>
+
+      <!-- Service 2 -->
+      <div class="service-card p-8 rounded-sm reveal">
+        <div class="w-12 h-12 mb-6 flex items-center justify-center border border-gold-500/30 rounded-sm">
+          <svg class="w-6 h-6 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <h3 class="font-serif text-xl text-white mb-3">Aircraft Management</h3>
+        <p class="text-sm text-gray-400 leading-relaxed mb-4">Full-service management for owners: crew recruitment, maintenance oversight, regulatory compliance, and revenue generation when your aircraft is idle.</p>
+        <a href="#" class="text-gold-500 text-xs tracking-wider uppercase hover:text-gold-400 transition inline-flex items-center gap-2">Learn More <span>→</span></a>
+      </div>
+
+      <!-- Service 3 -->
+      <div class="service-card p-8 rounded-sm reveal">
+        <div class="w-12 h-12 mb-6 flex items-center justify-center border border-gold-500/30 rounded-sm">
+          <svg class="w-6 h-6 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <h3 class="font-serif text-xl text-white mb-3">Flight Support & FBO</h3>
+        <p class="text-sm text-gray-400 leading-relaxed mb-4">Premium ground handling across Africa and Europe: VIP meet-and-assist, fuel uplift, catering, crew logistics, and secure ramp services.</p>
+        <a href="#" class="text-gold-500 text-xs tracking-wider uppercase hover:text-gold-400 transition inline-flex items-center gap-2">Learn More <span>→</span></a>
+      </div>
+
+      <!-- Service 4 -->
+      <div class="service-card p-8 rounded-sm reveal">
+        <div class="w-12 h-12 mb-6 flex items-center justify-center border border-gold-500/30 rounded-sm">
+          <svg class="w-6 h-6 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3 class="font-serif text-xl text-white mb-3">Empty Leg Access</h3>
+        <p class="text-sm text-gray-400 leading-relaxed mb-4">Up to 40% savings on one-way flights when aircraft reposition. Subscribe to our alerts and travel luxury for less, on your terms.</p>
+        <a href="#" class="text-gold-500 text-xs tracking-wider uppercase hover:text-gold-400 transition inline-flex items-center gap-2">Learn More <span>→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLEET -->
+<section id="fleet" class="py-24 md:py-32 relative" style="background: linear-gradient(180deg, #060d1f 0%, #0a1628 100%);">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16 gap-6 reveal">
+      <div class="max-w-2xl">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="h-px w-12 bg-gold-500"></div>
+          <span class="text-gold-500 text-xs tracking-[0.3em] uppercase">The Fleet</span>
+        </div>
+        <h2 class="font-serif text-4xl md:text-5xl text-white mb-5">Aircraft for Every Mission</h2>
+        <p class="text-gray-400 leading-relaxed">Handpicked for performance, comfort, and range. Each aircraft in our network is vetted against rigorous safety and service standards.</p>
+      </div>
+      <a href="#" class="btn-outline px-6 py-3 rounded-sm text-sm font-medium tracking-wide">View Full Catalogue</a>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Light Jet -->
+      <div class="fleet-card p-8 rounded-sm reveal">
+        <div class="flex justify-center mb-6">
+          <svg class="jet-silhouette w-40 h-20" viewBox="0 0 200 80" fill="none">
+            <path d="M20 40 L70 35 L160 20 L170 25 L80 42 L170 60 L160 65 L70 45 L20 40 Z" fill="#c9a961" opacity="0.85"/>
+            <path d="M85 30 L95 10 L100 10 L95 32" fill="#c9a961" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="text-xs text-gold-500 tracking-wider uppercase mb-2">Category 01</div>
+        <h3 class="font-serif text-2xl text-white mb-3">Light Jets</h3>
+        <p class="text-sm text-gray-400 leading-relaxed mb-6">Ideal for short hops and regional travel. Quick turnaround, efficient fuel burn, and seating for up to 7 passengers.</p>
+        <div class="space-y-2 text-xs text-gray-500 mb-6">
+          <div class="flex justify-between"><span>Range</span><span class="text-gray-300">Up to 2,400 km</span></div>
+          <div class="flex justify-between"><span>Passengers</span><span class="text-gray-300">5–7</span></div>
+          <div class="flex justify-between"><span>Typical Models</span><span class="text-gray-300">Citation CJ3, Phenom 300</span></div>
+        </div>
+        <a href="#" class="text-gold-500 text-xs tracking-wider uppercase hover:text-gold-400 transition">Request Pricing →</a>
+      </div>
+
+      <!-- Midsize Jet -->
+      <div class="fleet-card p-8 rounded-sm reveal">
+        <div class="flex justify-center mb-6">
+          <svg class="jet-silhouette w-48 h-20" viewBox="0 0 240 80" fill="none">
+            <path d="M15 40 L80 34 L190 18 L205 24 L95 42 L205 62 L190 68 L80 46 L15 40 Z" fill="#c9a961" opacity="0.85"/>
+            <path d="M100 28 L115 5 L122 5 L115 30" fill="#c9a961" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="text-xs text-gold-500 tracking-wider uppercase mb-2">Category 02</div>
+        <h3 class="font-serif text-2xl text-white mb-3">Midsize Jets</h3>
+        <p class="text-sm text-gray-400 leading-relaxed mb-6">The balanced choice for transcontinental travel. Stand-up cabins, full refreshment service, and coast-to-coast range.</p>
+        <div class="space-y-2 text-xs text-gray-500 mb-6">
+          <div class="flex justify-between"><span>Range</span><span class="text-gray-300">Up to 5,500 km</span></div>
+          <div class="flex justify-between"><span>Passengers</span><span class="text-gray-300">7–9</span></div>
+          <div class="flex justify-between"><span>Typical Models</span><span class="text-gray-300">Hawker 800XP, Challenger 350</span></div>
+        </div>
+        <a href="#" class="text-gold-500 text-xs tracking-wider uppercase hover:text-gold-400 transition">Request Pricing →</a>
+      </div>
+
+      <!-- Heavy Jet -->
+      <div class="fleet-card p-8 rounded-sm reveal">
+        <div class="flex justify-center mb-6">
+          <svg class="jet-silhouette w-56 h-20" viewBox="0 0 280 80" fill="none">
+            <path d="M10 40 L90 33 L230 15 L250 22 L110 42 L250 64 L230 72 L90 47 L10 40 Z" fill="#c9a961" opacity="0.85"/>
+            <path d="M115 26 L135 3 L143 3 L135 28" fill="#c9a961" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="text-xs text-gold-500 tracking-wider uppercase mb-2">Category 03</div>
+        <h3 class="font-serif text-2xl text-white mb-3">Heavy & Ultra Long Range</h3>
+        <p class="text-sm text-gray-400 leading-relaxed mb-6">Non-stop intercontinental capability. Private suites, full galleys, and the space to work, rest, or entertain in complete privacy.</p>
+        <div class="space-y-2 text-xs text-gray-500 mb-6">
+          <div class="flex justify-between"><span>Range</span><span class="text-gray-300">11,000+ km</span></div>
+          <div class="flex justify-between"><span>Passengers</span><span class="text-gray-300">10–16</span></div>
+          <div class="flex justify-between"><span>Typical Models</span><span class="text-gray-300">Gulfstream G650, Global 7500</span></div>
+        </div>
+        <a href="#" class="text-gold-500 text-xs tracking-wider uppercase hover:text-gold-400 transition">Request Pricing →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JET CARD PROGRAM -->
+<section id="jetcard" class="py-24 md:py-32 relative">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-5 reveal">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="h-px w-12 bg-gold-500"></div>
+          <span class="text-gold-500 text-xs tracking-[0.3em] uppercase">Membership</span>
+        </div>
+        <h2 class="font-serif text-4xl md:text-5xl text-white mb-6">The Metro Jet Card</h2>
+        <p class="text-gray-400 leading-relaxed mb-8">Pre-purchase flight hours at locked-in rates and enjoy priority access to our fleet. No depreciation, no hidden fees — just seamless travel, every time you fly.</p>
+        <ul class="space-y-4 mb-10">
+          <li class="flex items-start gap-3 text-sm text-gray-300">
+            <svg class="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>
+            <span>Fixed-hour blocks from 25 to 200 flight hours</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-300">
+            <svg class="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>
+            <span>Guaranteed availability with 10-hour notice</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-300">
+            <svg class="w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>
+            <span>Complimentary empty-leg repositioning</span>
+          </li>
+        </ul>
+        <a href="#" class="btn-gold px-8 py-4 rounded-sm text-sm font-semibold tracking-wide"><span>Enquire About Membership</span></a>
+      </div>
+
+      <div class="lg:col-span-7 grid sm:grid-cols-2 gap-4">
+        <div class="service-card p-6 rounded-sm reveal">
+          <div class="w-10 h-10 mb-4 flex items-center justify-center border border-gold-500/30 rounded-sm">
+            <svg class="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+          </div>
+          <h4 class="font-serif text-lg text-white mb-2">Unmatched Comfort</h4>
+          <p class="text-sm text-gray-400 leading-relaxed">Hand-selected cabins with lie-flat seats, premium catering, and bespoke amenities tailored to your preferences.</p>
+        </div>
+        <div class="service-card p-6 rounded-sm reveal">
+          <div class="w-10 h-10 mb-4 flex items-center justify-center border border-gold-500/30 rounded-sm">
+            <svg class="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <h4 class="font-serif text-lg text-white mb-2">Verified Safety</h4>
+          <p class="text-sm text-gray-400 leading-relaxed">Every operator in our network is independently audited and holds current AOC, IS-BAO, and insurance certifications.</p>
+        </div>
+        <div class="service-card p-6 rounded-sm reveal">
+          <div class="w-10 h-10 mb-4 flex items-center justify-center border border-gold-500/30 rounded-sm">
+            <svg class="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h4 class="font-serif text-lg text-white mb-2">Global Reach</h4>
+          <p class="text-sm text-gray-400 leading-relaxed">From Lagos to London, Dubai to Dallas — access a curated network spanning six continents and 20,000+ airports.</p>
+        </div>
+        <div class="service-card p-6 rounded-sm reveal">
+          <div class="w-10 h-10 mb-4 flex items-center justify-center border border-gold-500/30 rounded-sm">
+            <svg class="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          </div>
+          <h4 class="font-serif text-lg text-white mb-2">Elite Crew</h4>
+          <p class="text-sm text-gray-400 leading-relaxed">Captains and cabin crew with 5,000+ hours, multilingual service, and hospitality training from leading luxury brands.</p>
+        </div>
+        <div class="service-card p-6 rounded-sm reveal">
+          <div class="w-10 h-10 mb-4 flex items-center justify-center border border-gold-500/30 rounded-sm">
+            <svg class="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h4 class="font-serif text-lg text-white mb-2">Modern Aircraft</h4>
+          <p class="text-sm text-gray-400 leading-relaxed">An average fleet age under 7 years, equipped with the latest avionics, Wi-Fi, and noise-reduction technology.</p>
+        </div>
+        <div class="service-card p-6 rounded-sm reveal">
+          <div class="w-10 h-10 mb-4 flex items-center justify-center border border-gold-500/30 rounded-sm">
+            <svg class="w-5 h-5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h4 class="font-serif text-lg text-white mb-2">Transparent Pricing</h4>
+          <p class="text-sm text-gray-400 leading-relaxed">All-inclusive quotes with no surprise fees. What you see is what you pay — backed by our price-match guarantee.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAFETY -->
+<section id="safety" class="py-24 md:py-32 relative" style="background: linear-gradient(180deg, #0a1628 0%, #060d1f 100%);">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <div class="reveal">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="h-px w-12 bg-gold-500"></div>
+          <span class="text-gold-500 text-xs tracking-[0.3em] uppercase">Safety & Quality</span>
+        </div>
+        <h2 class="font-serif text-4xl md:text-5xl text-white mb-6">Excellence Is Non-Negotiable</h2>
+        <p class="text-gray-400 leading-relaxed mb-6">Every flight is governed by a proactive Safety Management System (SMS) with continuous risk assessment, independent audits, and full regulatory oversight. From pre-flight inspection to post-flight debrief, no detail is left to chance.</p>
+        <p class="text-gray-400 leading-relaxed">Our quality assurance team monitors maintenance schedules, crew duty times, and operational metrics in real time — ensuring every journey meets the highest international standards.</p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 reveal">
+        <div class="cert-badge p-6 rounded-sm text-center">
+          <div class="w-14 h-14 mx-auto mb-3 flex items-center justify-center border border-gold-500/40 rounded-full">
+            <span class="font-serif text-gold-500 text-lg font-bold">NCAA</span>
+          </div>
+          <div class="text-xs text-gray-300 tracking-wider uppercase">Nigerian Civil Aviation</div>
+          <div class="text-[10px] text-gray-500 mt-1">Certified Operator</div>
+        </div>
+        <div class="cert-badge p-6 rounded-sm text-center">
+          <div class="w-14 h-14 mx-auto mb-3 flex items-center justify-center border border-gold-500/40 rounded-full">
+            <span class="font-serif text-gold-500 text-lg font-bold">EASA</span>
+          </div>
+          <div class="text-xs text-gray-300 tracking-wider uppercase">EU Aviation Safety</div>
+          <div class="text-[10px] text-gray-500 mt-1">AOC Holder</div>
+        </div>
+        <div class="cert-badge p-6 rounded-sm text-center">
+          <div class="w-14 h-14 mx-auto mb-3 flex items-center justify-center border border-gold-500/40 rounded-full">
+            <span class="font-serif text-gold-500 text-lg font-bold">IS</span>
+          </div>
+          <div class="text-xs text-gray-300 tracking-wider uppercase">IS-BAO Stage 3</div>
+          <div class="text-[10px] text-gray-500 mt-1">Safety Audit</div>
+        </div>
+        <div class="cert-badge p-6 rounded-sm text-center">
+          <div class="w-14 h-14 mx-auto mb-3 flex items-center justify-center border border-gold-500/40 rounded-full">
+            <span class="font-serif text-gold-500 text-lg font-bold">SMS</span>
+          </div>
+          <div class="text-xs text-gray-300 tracking-wider uppercase">Safety Management</div>
+          <div class="text-[10px] text-gray-500 mt-1">Active System</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="py-24 md:py-32">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <div class="h-px w-12 bg-gold-500"></div>
+        <span class="text-gold-500 text-xs tracking-[0.3em] uppercase">Client Voices</span>
+        <div class="h-px w-12 bg-gold-500"></div>
+      </div>
+      <h2 class="font-serif text-4xl md:text-5xl text-white mb-5">Trusted by Those Who Expect the Best</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="testimonial-card p-8 rounded-sm reveal">
+        <div class="flex gap-1 mb-4 text-gold-500">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+        </div>
+        <p class="text-gray-300 leading-relaxed mb-6 italic">"From the first call to touchdown, every detail was flawless. The Metro Jets has become our exclusive partner for executive travel across West Africa."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-navy-900 font-semibold text-sm">AO</div>
+          <div>
+            <div class="text-sm text-white">Adaeze O.</div>
+            <div class="text-xs text-gray-500">CEO, Lagos-based Investment Firm</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card p-8 rounded-sm reveal">
+        <div class="flex gap-1 mb-4 text-gold-500">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+        </div>
+        <p class="text-gray-300 leading-relaxed mb-6 italic">"Their ground handling in Lagos is second to none. Our international crew consistently rate Metro as the smoothest FBO experience on the continent."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-navy-900 font-semibold text-sm">JM</div>
+          <div>
+            <div class="text-sm text-white">James M.</div>
+            <div class="text-xs text-gray-500">Chief Pilot, European Charter Operator</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card p-8 rounded-sm reveal">
+        <div class="flex gap-1 mb-4 text-gold-500">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/></svg>
+        </div>
+        <p class="text-gray-300 leading-relaxed mb-6 italic">"We booked a last-minute family trip to the Maldives. The team delivered a flawless experience — discreet, luxurious, and genuinely personal."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-navy-900 font-semibold text-sm">FK</div>
+          <div>
+            <div class="text-sm text-white">Fatima K.</div>
+            <div class="text-xs text-gray-500">Private Client, Abuja</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact" class="py-24 md:py-32 relative overflow-hidden">
+  <div class="absolute inset-0" style="background: radial-gradient(ellipse at center, rgba(201,169,97,0.08) 0%, transparent 70%);"></div>
+  <div class="relative max-w-4xl mx-auto px-6 lg:px-10 text-center reveal">
+    <div class="flex items-center justify-center gap-3 mb-6">
+      <div class="h-px w-12 bg-gold-500"></div>
+      <span class="text-gold-500 text-xs tracking-[0.3em] uppercase">Begin Your Journey</span>
+      <div class="h-px w-12 bg-gold-500"></div>
+    </div>
+    <h2 class="font-serif text-4xl md:text-6xl text-white mb-6 leading-tight">Ready to Fly <span class="gold-text italic">Further?</span></h2>
+    <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-10">Speak with a dedicated flight coordinator. Available 24 hours a day, 7 days a week — wherever you are in the world.</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="tel:+2349062022230" class="btn-gold px-10 py-4 rounded-sm text-sm font-semibold tracking-wide"><span>+234 906 202 2230</span></a>
+      <a href="mailto:charter@themetrojets.com" class="btn-outline px-10 py-4 rounded-sm text-sm font-semibold tracking-wide">charter@themetrojets.com</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-gold-500/15 bg-navy-900 pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="grid md:grid-cols-4 gap-10 mb-12">
+      <div class="md:col-span-1">
+        <div class="flex items-center gap-3 mb-4">
+          <svg class="w-8 h-8" viewBox="0 0 40 40" fill="none">
+            <path d="M20 4L36 20L20 36L4 20L20 4Z" stroke="#c9a961" stroke-width="1.5"/>
+            <path d="M20 10L30 20L20 30L10 20L20 10Z" fill="#c9a961" opacity="0.2"/>
+          </svg>
+          <div class="font-serif text-lg text-white">The Metro Jets</div>
+        </div>
+        <p class="text-sm text-gray-500 leading-relaxed">Redefining private aviation across Africa and beyond. Where luxury meets precision.</p>
+      </div>
+      <div>
+        <h4 class="text-xs text-gold-500 tracking-wider uppercase mb-4">Services</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="#" class="hover:text-gold-400 transition">Private Charter</a></li>
+          <li><a href="#" class="hover:text-gold-400 transition">Aircraft Management</a></li>
+          <li><a href="#" class="hover:text-gold-400 transition">Flight Support</a></li>
+          <li><a href="#" class="hover:text-gold-400 transition">Empty Legs</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs text-gold-500 tracking-wider uppercase mb-4">Company</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><a href="#" class="hover:text-gold-400 transition">About Us</a></li>
+          <li><a href="#" class="hover:text-gold-400 transition">Safety Standards</a></li>
+          <li><a href="#" class="hover:text-gold-400 transition">Careers</a></li>
+          <li><a href="#" class="hover:text-gold-400 transition">Press</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs text-gold-500 tracking-wider uppercase mb-4">Contact</h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li>+234 906 202 2230</li>
+          <li>charter@themetrojets.com</li>
+          <li>Lagos, Nigeria</li>
+          <li class="flex gap-3 pt-2">
+            <a href="#" class="w-8 h-8 border border-gold-500/30 rounded-full flex items-center justify-center hover:border-gold-500 hover:text-gold-500 transition">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/></svg>
+            </a>
+            <a href="#" class="w-8 h-8 border border-gold-500/30 rounded-full flex items-center justify-center hover:border-gold-500 hover:text-gold-500 transition">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3A2 2 0 0 1 21 5V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H19M18.5 18.5V13.2A3.26 3.26 0 0 0 15.24 9.94C14.39 9.94 13.4 10.46 12.92 11.24V10.13H10.13V18.5H12.92V13.57C12.92 12.8 13.54 12.17 14.31 12.17A1.4 1.4 0 0 1 15.71 13.57V18.5H18.5M6.88 8.56A1.68 1.68 0 0 0 8.56 6.88C8.56 5.95 7.81 5.19 6.88 5.19A1.69 1.69 0 0 0 5.19 6.88C5.19 7.81 5.95 8.56 6.88 8.56M8.27 18.5V10.13H5.5V18.5H8.27Z"/></svg>
+            </a>
+            <a href="#" class="w-8 h-8 border border-gold-500/30 rounded-full flex items-center justify-center hover:border-gold-500 hover:text-gold-500 transition">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="gold-divider mb-6"></div>
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+      <div>© 2026 The Metro Jets · Metro Aviation Limited. All rights reserved.</div>
+      <div class="flex gap-6">
+        <a href="#" class="hover:text-gold-400 transition">Privacy Policy</a>
+        <a href="#" class="hover:text-gold-400 transition">Terms of Service</a>
+        <a href="#" class="hover:text-gold-400 transition">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) navbar.classList.add('nav-scrolled');
+    else navbar.classList.remove('nav-scrolled');
+  });
+
+  // Mobile menu
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Booking form
+  document.getElementById('bookingForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span>SENDING...</span>';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.innerHTML = '<span>✓ QUOTE REQUESTED</span>';
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+        e.target.reset();
+      }, 2500);
+    }, 1200);
+  });
+</script>
+</body>
+</html>
